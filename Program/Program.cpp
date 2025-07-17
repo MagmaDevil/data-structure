@@ -2,184 +2,131 @@
 
 using namespace std;
 
-template<typename T>
-
+template <typename T>
 class List
 {
 private:
-    struct Node 
-    {
-        T data;
-        Node * next;
+	struct Node
+	{
+		T data;
+		Node * next;
+		Node * previous;
+	};
 
-    };
+	int size;
 
-    int size;
-
-    Node * head;
+	Node * head;
+	Node * tail;
 
 public:
 
-    List()
-    {
-        size = 0;
-        head = nullptr;
-    }
+	List()
+	{
+		size = 0;
+		head = nullptr;
+		tail = nullptr;
+	}
 
-    void push_front(T data)
-    {
-            Node * newNode = new Node;
+	void push_front(T data)
+	{
+		Node * newNode = new Node;
 
-            newNode->data = data;
+		newNode->data = data;
+		newNode->next = nullptr;
+		newNode->previous = nullptr;
 
-        if(head == nullptr)
-        {
-            head = newNode;
+		if (head == nullptr)
+		{
+			head = newNode;
+			tail = newNode;
+		}
+		else
+		{
+			head->previous = newNode;
+			newNode->next = head;
+			head = newNode;
+		}
+		size++;
+	}
 
-            newNode->next = nullptr;
-        }
+	void pop_front()
+	{
+		
+		
+		if (head == nullptr)
+		{
+			cout << "linked list is empty" << endl;
+		}
 
-        else
-        {
-            newNode->next = head;
+		else
+		{
+			Node* deleteNode = head;
 
-            head = newNode;
-        }
+			if(head == tail)
+			{
+				head = nullptr;
+				tail = nullptr;
+			}
 
-        size++;
+			else
+			{
+				deleteNode->next->previous = nullptr;
+				head = head->next;
+			}
+			delete deleteNode;
+			size--;
+		}
+	}
 
-    }
+	void push_back(T data)
+	{
+		Node* newNode = new Node;
 
-    void pop_front()
-    {
+		newNode->data = data;
+		newNode->next = nullptr;
+		newNode->previous = nullptr;
 
-        if (head == nullptr)
-        {
-            cout << "linked list is empty!" << endl;
-        }
+		if (head == nullptr)
+		{
+			head = newNode;
+			tail = newNode;
+		}
+		else
+		{
+			tail->next = newNode;
+			newNode->previous = tail;
+			tail = newNode;
+		}
+		size++;
+	}
 
-        else
-        {
-            Node * deleteNode = head;
-            head = deleteNode->next;
-            delete deleteNode;
-            size--;
-        }
-    }
+	~List()
+	{
+		while (head != nullptr)
+		{
+			pop_front();
+		}
+	}
 
-    void push_back(T data)
-    {
-        Node * newNode = new Node;
-        
-        newNode->data = data;
-        newNode->next = nullptr;
-
-        if (head == nullptr)
-        {
-            head = newNode;
-        }
-
-        else
-        {
-            Node * currentNode = head;
-
-            while(currentNode->next != nullptr)
-            {
-                currentNode = currentNode->next;
-            }
-            currentNode->next = newNode;
-        }
-        size++;
-    }
-
-    void pop_back()
-    {
-        if (head == nullptr)
-        {
-            cout << "linked list is empty!" << endl;
-        }
-
-        else
-        {
-            Node * deleteNode = head;
-            Node * previousNode = nullptr;
-
-            if (size == 1)
-            {
-                head = deleteNode->next;
-
-                delete deleteNode;
-            }
-            
-            else
-            {
-                while(deleteNode->next != nullptr)
-                {
-                    previousNode = deleteNode;
-
-                    deleteNode = deleteNode->next;
-                }
-
-                previousNode->next = deleteNode->next;
-
-                delete deleteNode;
-            }
-
-            size--;
-        }
-    }
-
-    bool empty()
-    {
-        return(head == nullptr);
-    }
-
-    void remove(T data)
-    {
-        if (head == nullptr)
-        {
-            cout << "linked list is empty!" << endl;
-        }
-
-
-    }
-
-    ~List()
-    {
-        while(head != nullptr)
-        {
-            pop_front();
-        }
-    }
 };
 
 int main()
 {
-    List<int> list;
+	List<int> list;
 
-    list.push_front(10);
-    list.push_front(5);
-    list.push_front(1);
+	list.push_front(10);
+	list.push_front(5);
+	list.push_front(1);
 
-    cout << list.empty() << endl;
+	list.pop_front();
+	list.pop_front();
+	list.pop_front();
+	list.pop_front();
 
-    list.pop_front();
-    list.pop_front();
-    list.pop_front();
-    list.pop_front();
+	list.push_back(10);
+	list.push_back(5);
+	list.push_back(1);
 
-    cout << list.empty() << endl;
 
-    list.push_back(10);
-    list.push_back(20);
-
-    cout << list.empty() << endl;
-
-    list.pop_back();
-    list.pop_back();
-    list.pop_back();
-
-    cout << list.empty() << endl;
-
-    return 0;
+	return 0;
 }
