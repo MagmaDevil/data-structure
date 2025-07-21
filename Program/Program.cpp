@@ -36,7 +36,8 @@ public:
 		else
 		{
 			newNode->next = head->next;
-			head->next = newNode->next;
+			head->next = newNode;
+			head = newNode;
 		}
 	}
 };
@@ -44,6 +45,8 @@ public:
 int main()
 {
 	List<int> list;
+
+	list.push_back(10);
 
 	return 0;
 }
