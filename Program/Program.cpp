@@ -2,19 +2,30 @@
 
 using namespace std;
 
-class Vector
+template <typename T>
+class Stack
 {
 private:
-	int* data;
 	int count;
+	int highset;
 	int capacity;
+	T * container;
 
 public:
-	Vector()
+	Stack()
 	{
-		data = nullptr;
 		count = 0;
+		highset = -1;
 		capacity = 0;
+		container = nullptr;
+	}
+
+	~Stack()
+	{
+		if (container != nullptr)
+		{
+			delete[] container;
+		}		
 	}
 };
 
