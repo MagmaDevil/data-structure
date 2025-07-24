@@ -1,59 +1,120 @@
 ﻿#include <iostream>
-#define SIZE 4
 
 using namespace std;
 
 template <typename T>
-class Queue
+class PriorityQueue
 {
 private:
-	int rear;
-	int front;
+	int index;
+	int capacity;
 
-	T container[SIZE];
+	T* container;
+
 public:
-	Queue()
+	PriorityQueue()
 	{
-		rear = SIZE - 1;
-		front = SIZE - 1;
+		index = 0;
+		capacity = 0;
 
-		for (int i = 0; i < SIZE; i++)
+		container = nullptr;
+	}
+
+	void resize(int newSize)
+	{
+		capacity = newSize;
+
+		T* temporary = new T[capacity];
+
+		for (int i = 0; i < capacity; i++)
 		{
-			container[i] = NULL;
+			temporary[i] = NULL;
 		}
+
+		for (int i = 0; i < index; i++)
+		{
+			temporary[i] = container[i];
+		}
+
+		if (container != nullptr)
+		{
+			delete[] container;
+		}
+
+		container = temporary;
 	}
 
 	void push(T data)
 	{
-		if(rear + 1 & SIZE - 1)
+		if (capacity <= 0)
 		{
-			cout << "Queue is overflow!" << endl;
+			resize(1);
+		}
+			
+		else if(index >= capacity)
+		{
+			resize(capacity * 2);
+		}
+		
+		container[index++] = data;
+
+		int child = index - 1;
+		int parent = (child - 1) / 2;
+
+		while (child > 0)
+		{
+			if (container[parent] < container[child])
+			{
+				swap(container[parent], container[child]);
+			}
+
+			child = parent;
+			parent = (child - 1) / 2;
+		}
+	}
+
+	const bool & empty()
+	{
+		return index == 0;
+	}
+
+	const int & size()
+	{
+		return index;
+	}
+
+	const T & top()
+	{
+		if (empty())
+		{
+			exit(1);
 		}
 
 		else
 		{
-			if(rear + 1 >= SIZE -1)
-			{
-				rear = 0;
-				container[++rear] = data;
-			}
+			return container[0];
+		}
+	}
 
-			else
-			{
-				container[++rear] = data;
-			}
+	~PriorityQueue()
+	{
+		if (container != nullptr)
+		{
+			delete[] container;
 		}
 	}
 };
 
 int main()
 {
-	Queue<int> queue;
+	PriorityQueue<int> priorityQueue;
 
-	queue.push(10);
-	queue.push(20);
-	queue.push(30);
-	queue.push(40);
+	priorityQueue.push(17);
+	priorityQueue.push(31);
+	priorityQueue.push(9);
+	priorityQueue.push(15);
+
+	cout << priorityQueue.top() << endl;
 
 	return 0;
 }
