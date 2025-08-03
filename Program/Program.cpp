@@ -41,6 +41,11 @@ public:
 
 		for (int i = 0; i < count; i++)
 		{
+			newlist[i] = nullptr;
+		}
+
+		for (int i = 0; i < count; i++)
+		{
 			newlist[i] = list[i];
 		}
 
@@ -91,6 +96,11 @@ public:
 		else if (size >= capacity)
 		{
 			resize(capacity * 2);
+		}
+
+		if(count > size)
+		{
+			resize();
 		}
 
 		vertex[size++] = data;
